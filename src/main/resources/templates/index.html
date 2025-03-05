@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Planner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> <!--script-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> 
 
     <style>
         body, h1, h2, p, table {
@@ -185,5 +187,32 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        // https://www.sitepoint.com/community/t/flatpickr-first-day-of-week-monday-and-shorthandcurrentmonth-help/354297
+        flatpickr("#startDate", {
+            locale: {
+                firstDayOfWeek: 1 
+            }
+        });
+        flatpickr("#endDate", {
+            locale: {
+                firstDayOfWeek: 1 
+            }
+        });
+
+        // https://stackoverflow.com/questions/72034605/flatpickr-show-24-hour-clock-on-mobile
+        flatpickr("#startTime", {
+            enableTime: true,
+            noCalendar: true,
+            time_24hr: true
+        });
+        flatpickr("#endTime", {
+            enableTime: true,
+            noCalendar: true,
+            time_24hr: true 
+        });
+
+    </script>
 </body>
 </html>
