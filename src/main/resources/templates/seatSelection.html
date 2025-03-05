@@ -43,6 +43,24 @@
         .seat-button:hover:not(.occupied) {
             background-color: rgb(108, 162, 108);
         }
+        .recommended-seat {
+            background-color: #45a049 !important;
+            color: white;
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            background-color: aqua;
+            color: black;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            transform: translateY(-150%); /*https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateY*/
+        }
     </style>
 </head>
 <body>
@@ -63,8 +81,11 @@
                     
                         <button class="seat-button" type="submit"
                                 th:classappend="${seat.isOccupied ? 'occupied' : 'available'}"
-                                th:disabled="${seat.isOccupied}">
+                                th:disabled="${seat.isOccupied}"
+                                onMouseEnter="showMessage(this)"
+                                onMouseLeave="hideMessage(this)">
                             <span th:text="${seat.seatNumber}"></span>
+                            <span class="tooltip" th:text="'Additional legroom: ' + (${seat.hasLegroom} ? 'yes' : 'no') + ' | Close to exit: ' + (${seat.isCloseToExit} ? 'yes' : 'no') + ' | Seat type: ' + (${seat.seatType})"></span>
                         </button>
                     </form>
                 </div>
@@ -72,5 +93,16 @@
 
         </div>
     </div>
+    <script>
+    function showMessage(button) {
+        let tooltip = button.querySelector(".tooltip");
+        tooltip.style.visibility = "visible";
+    }
+
+    function hideMessage(button) {
+        let tooltip = button.querySelector(".tooltip");
+        tooltip.style.visibility = "hidden";
+    }
+    </script>
 </body>
 </html>
