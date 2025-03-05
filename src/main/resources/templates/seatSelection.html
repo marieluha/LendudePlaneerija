@@ -4,8 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seats</title>
+    <style>
+        .seat-grid {
+            display: grid;
+            flex-wrap: wrap;
+
+            grid-template-columns: repeat(5, 100px);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .seat-button {
+            width: 100px;
+            height: 100px;
+            font-size: 16px;
+            text-align: center;
+            line-height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+
+
+            position: relative;
+           
+        }
+
+        .seat-button.available {
+            background-color: rgb(97, 97, 99);
+            color: white;
+        }
+
+        .seat-button.occupied {
+            background-color: rgb(226, 77, 77);
+            color: white;
+            cursor: not-allowed;
+        }
+
+        .seat-button:hover:not(.occupied) {
+            background-color: rgb(108, 162, 108);
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <div id="seatSelection">
+            <p>Seats for Flight ID: [[${flightId}]]</p>
+
+            <div id="seatTooltip" class="seat-tooltip"></div>
+
+
+            <div class="seat-grid">
+                <!--<div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}">-->
+                <div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}, data-legroom=${seat.hasLegroom}, data-exit=${seat.isCloseToExit}">
+            
+                    <form th:action="@{/seats/select}" method="post">
+                        <input type="hidden" th:name="seatId" th:value="${seat.id}" />
+                        <input type="hidden" th:name="flightId" th:value="${flightId}" />
+                    
+                        <button class="seat-button" type="submit"
+                                th:classappend="${seat.isOccupied ? 'occupied' : 'available'}"
+                                th:disabled="${seat.isOccupied}">
+                            <span th:text="${seat.seatNumber}"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
