@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Planner</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Flight Planner</h1>
+        
+        <table class="flight-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Destination</th>
+                    <th>Price</th>
+                    <th>Time</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="flight : ${flights}">
+                    <td th:text="${flight.name}"></td>
+                    <td th:text="${flight.destination}"></td>
+                    <td th:text="${flight.price}"></td>
+                    <td th:text="${flight.flightTime}"></td>
+                    <td th:text="${flight.flightDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
