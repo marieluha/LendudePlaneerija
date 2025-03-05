@@ -33,4 +33,17 @@ public class SeatController {
         
         return "seatSelection";
     }
+
+    @PostMapping("/seats/select")
+    public String selectSeat(@RequestParam("seatId") int seatId, @RequestParam("flightId") int flightId, Model model) {
+       
+        Seat selectedSeat = seatService.selectSeat(seatId);
+
+        
+        List<Seat> allSeats = seatService.getSeats(flightId);
+        model.addAttribute("allSeats", allSeats);
+        model.addAttribute("flightId", flightId);
+
+        return "seatSelection"; 
+    }
 }

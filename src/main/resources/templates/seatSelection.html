@@ -65,6 +65,36 @@
 </head>
 <body>
     <div class="container">
+        <button class="back-button" onclick="window.location.href='/flights'">Back to Flights List</button>
+
+        <h2>Select Your Seats</h2>
+
+        <div>
+            <label for="seatPreference">Seat Type:</label>
+            <select id="seatPreference">
+                <option value="">Any</option>
+                <option value="window">Window</option>
+                <option value="aisle">Aisle</option>
+                <option value="middle">Middle</option>
+            </select>
+        
+            <label for="legroomPreference">Legroom:</label>
+            <select id="legroomPreference">
+                <option value="">Any</option>
+                <option value="true">Has Legroom</option>
+                <option value="false">No Extra Legroom</option>
+            </select>
+        
+            <label for="exitPreference">Close to Exit:</label>
+            <select id="exitPreference">
+                <option value="">Any</option>
+                <option value="true">Close to Exit</option>
+                <option value="false">Not Close to Exit</option>
+            </select>
+        
+            <button onclick="filterSeats()">Apply Filter</button>
+        </div>
+
         <div id="seatSelection">
             <p>Seats for Flight ID: [[${flightId}]]</p>
 
@@ -103,6 +133,46 @@
         let tooltip = button.querySelector(".tooltip");
         tooltip.style.visibility = "hidden";
     }
+
+// FILTERRRRRRS
+    function filterSeats() {
+        let seatPreference = document.getElementById("seatPreference").value;
+        let legroomPreference = document.getElementById("legroomPreference").value;
+        let exitPreference = document.getElementById("exitPreference").value;
+        let seats = document.querySelectorAll(".seat-grid div"); //all seats
+
+        seats.forEach(seat => {
+            let seatButton = seat.querySelector(".seat-button");
+            let seatType = seat.getAttribute("data-type");
+            let hasLegroom = seat.getAttribute("data-legroom");
+            let isCloseToExit = seat.getAttribute("data-exit");
+            let isOccupied = seatButton.hasAttribute("disabled");
+
+            // to true and false
+            hasLegroom = hasLegroom === "true";
+            isCloseToExit = isCloseToExit === "true";
+
+            //remove the colors
+            seatButton.classList.remove("recommended-seat");
+            seatButton.classList.remove("available", "occupied");
+
+            if (isOccupied) {
+                seatButton.classList.add("occupied");
+            } else {
+                seatButton.classList.add("available");
+
+                let matchesSeatType = seatPreference === "" || seatType === seatPreference;
+                let matchesLegroom = legroomPreference === "" || (legroomPreference === "true" && hasLegroom) || (legroomPreference === "false" && !hasLegroom);
+                let matchesExit = exitPreference === "" || (exitPreference === "true" && isCloseToExit) || (exitPreference === "false" && !isCloseToExit);
+
+                //has to match everything
+                if (matchesSeatType && matchesLegroom && matchesExit) {
+                    seatButton.classList.add("recommended-seat");
+                }
+            }
+        });
+    }
+
     </script>
 </body>
 </html>
