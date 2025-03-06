@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seats</title>
+    <title>Select Your Seats</title>
     <style>
         .seat-grid {
             display: grid;
-            flex-wrap: wrap;
+            /*display: flex;*/
+            /*flex-wrap: wrap;*/
 
-            grid-template-columns: repeat(5, 100px);
+            grid-template-columns: repeat(2, 100px) 250px repeat(3, 100px);
             gap: 10px;
             margin-top: 20px;
+            
+            justify-content: center;
+            border: 3px solid black; /* Plane outline */
+            padding: 20px;
+            background-color: lightgray;
+            margin-left: 700px;
+            margin-right: 700px;
         }
+
         .seat-button {
             width: 100px;
             height: 100px;
@@ -26,7 +35,7 @@
 
 
             position: relative;
-           
+            /*display: inline-block;*/
         }
 
         .seat-button.available {
@@ -43,6 +52,16 @@
         .seat-button:hover:not(.occupied) {
             background-color: rgb(108, 162, 108);
         }
+
+        .seat-details {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f8f8f8;
+        }
+
+        
         .recommended-seat {
             background-color: #45a049 !important;
             color: white;
@@ -51,19 +70,41 @@
         }
 
         .tooltip {
-            visibility: hidden;
-            position: absolute;
-            background-color: aqua;
-            color: black;
-            padding: 5px;
-            border-radius: 5px;
-            font-size: 12px;
-            white-space: nowrap;
-            transform: translateY(-150%); /*https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateY*/
-        }
-    </style>
+        visibility: hidden;
+        position: absolute;
+        /*background-color: rgba(255, 255, 255, 0.591);*/
+        background-color: aqua;
+        color: black;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 12px;
+        white-space: nowrap;
+        transform: translateY(-150%);
+    }
+
+    .seat-button:hover .tooltip {
+        visibility: visible;
+    }
+
+    .gap {
+        width: 250px; /* Keeps spacing */
+        height: 100px;
+        background-color: transparent;
+    }
+
+    .row-gap {
+        grid-column: span 7; /* Creates a full empty row after 5 rows */
+        height: 100px;
+    }
+
+
+
+</style>
+
+    
 </head>
 <body>
+
     <div class="container">
         <button class="back-button" onclick="window.location.href='/flights'">Back to Flights List</button>
 
@@ -91,8 +132,22 @@
                 <option value="true">Close to Exit</option>
                 <option value="false">Not Close to Exit</option>
             </select>
-        
             <button onclick="filterSeats()">Apply Filter</button>
+        </div>   
+        
+        <div>
+            <label for="adjacentSeats">Do you want seats next to each other?</label>
+            <select id="adjacentSeats">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="seatCount">How many seats?</label>
+            <select id="seatCount">
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <button onclick="nextToEachOther()">korvuti</button>
         </div>
 
         <div id="seatSelection">
@@ -104,7 +159,7 @@
             <div class="seat-grid">
                 <!--<div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}">-->
                 <div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}, data-legroom=${seat.hasLegroom}, data-exit=${seat.isCloseToExit}">
-            
+               
                     <form th:action="@{/seats/select}" method="post">
                         <input type="hidden" th:name="seatId" th:value="${seat.id}" />
                         <input type="hidden" th:name="flightId" th:value="${flightId}" />
@@ -117,14 +172,90 @@
                             <span th:text="${seat.seatNumber}"></span>
                             <span class="tooltip" th:text="'Additional legroom: ' + (${seat.hasLegroom} ? 'yes' : 'no') + ' | Close to exit: ' + (${seat.isCloseToExit} ? 'yes' : 'no') + ' | Seat type: ' + (${seat.seatType})"></span>
                         </button>
+                        <!--<div class="seat-tooltip" th:text="'Legroom: ' + (${seat.hasLegroom} ? 'Yes' : 'No') + ' | Exit: ' + (${seat.isCloseToExit} ? 'Yes' : 'No')"></div>-->
                     </form>
                 </div>
             </div>
 
         </div>
+
     </div>
     <script>
-    function showMessage(button) {
+        const totalRows = 10;
+        const seatsPerSide = 3;
+
+        let seatGrid = document.getElementById('seatGrid');
+
+        for (let i = 0; i < totalRows; i++) {
+            for (let j = 0; j < seatsPerSide; j++) {
+                let seat = document.createElement('button');
+                seat.className = "seat-button available";
+                seat.innerText = `S${i+1}${j+1}`;
+                seatGrid.appendChild(seat);
+            }
+
+            // Add aisle space
+            let emptyGap = document.createElement('div');
+            emptyGap.className = "gap";
+            seatGrid.appendChild(emptyGap);
+
+            for (let j = 0; j < seatsPerSide; j++) {
+                let seat = document.createElement('button');
+                seat.className = "seat-button available";
+                seat.innerText = `S${i+1}${j+4}`;
+                seatGrid.appendChild(seat);
+            }
+        }
+
+
+        
+
+
+
+        function filterSeats() {
+            let seatPreference = document.getElementById("seatPreference").value;
+            let legroomPreference = document.getElementById("legroomPreference").value;
+            let exitPreference = document.getElementById("exitPreference").value;
+            let seats = document.querySelectorAll(".seat-grid div");
+
+            seats.forEach(seat => {
+                let seatButton = seat.querySelector(".seat-button");
+                let seatType = seat.getAttribute("data-type");
+                let hasLegroom = seat.getAttribute("data-legroom");
+                let isCloseToExit = seat.getAttribute("data-exit");
+                let isOccupied = seatButton.hasAttribute("disabled");
+
+                // Normalize values (Thymeleaf may pass booleans as strings)
+                hasLegroom = hasLegroom === "true";
+                isCloseToExit = isCloseToExit === "true";
+
+                // Remove previous highlight and reset classes
+                seatButton.classList.remove("recommended-seat");
+                seatButton.classList.remove("available", "occupied");
+
+                // Restore original class based on occupancy
+                if (isOccupied) {
+                    seatButton.classList.add("occupied");
+                } else {
+                    seatButton.classList.add("available");
+
+                    // Apply blue only if seat matches all selected preferences
+                    let matchesSeatType = seatPreference === "" || seatType === seatPreference;
+                    let matchesLegroom = legroomPreference === "" || (legroomPreference === "true" && hasLegroom) || (legroomPreference === "false" && !hasLegroom);
+                    let matchesExit = exitPreference === "" || (exitPreference === "true" && isCloseToExit) || (exitPreference === "false" && !isCloseToExit);
+
+                    if (matchesSeatType && matchesLegroom && matchesExit) {
+                        seatButton.classList.add("recommended-seat");
+                    }
+                }
+            });
+        }
+
+
+
+
+
+function showMessage(button) {
         let tooltip = button.querySelector(".tooltip");
         tooltip.style.visibility = "visible";
     }
@@ -134,45 +265,7 @@
         tooltip.style.visibility = "hidden";
     }
 
-// FILTERRRRRRS
-    function filterSeats() {
-        let seatPreference = document.getElementById("seatPreference").value;
-        let legroomPreference = document.getElementById("legroomPreference").value;
-        let exitPreference = document.getElementById("exitPreference").value;
-        let seats = document.querySelectorAll(".seat-grid div"); //all seats
-
-        seats.forEach(seat => {
-            let seatButton = seat.querySelector(".seat-button");
-            let seatType = seat.getAttribute("data-type");
-            let hasLegroom = seat.getAttribute("data-legroom");
-            let isCloseToExit = seat.getAttribute("data-exit");
-            let isOccupied = seatButton.hasAttribute("disabled");
-
-            // to true and false
-            hasLegroom = hasLegroom === "true";
-            isCloseToExit = isCloseToExit === "true";
-
-            //remove the colors
-            seatButton.classList.remove("recommended-seat");
-            seatButton.classList.remove("available", "occupied");
-
-            if (isOccupied) {
-                seatButton.classList.add("occupied");
-            } else {
-                seatButton.classList.add("available");
-
-                let matchesSeatType = seatPreference === "" || seatType === seatPreference;
-                let matchesLegroom = legroomPreference === "" || (legroomPreference === "true" && hasLegroom) || (legroomPreference === "false" && !hasLegroom);
-                let matchesExit = exitPreference === "" || (exitPreference === "true" && isCloseToExit) || (exitPreference === "false" && !isCloseToExit);
-
-                //has to match everything
-                if (matchesSeatType && matchesLegroom && matchesExit) {
-                    seatButton.classList.add("recommended-seat");
-                }
-            }
-        });
-    }
-
     </script>
+    
 </body>
 </html>

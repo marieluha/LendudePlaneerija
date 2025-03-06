@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Planner</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> <!--script-->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> 
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
     <style>
+        /* General Reset */
         body, h1, h2, p, table {
             margin: 0;
             padding: 0;
@@ -21,6 +22,7 @@
             color: #333;
         }
 
+        /* Container Styling */
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -37,6 +39,7 @@
             text-align: center;
         }
 
+        /* Form Styling */
         .filter-form {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -68,6 +71,7 @@
             border-color: #3498db;
         }
 
+        /* Submit Button */
         .filter-form button {
             grid-column: span 4;
             padding: 12px 0;
@@ -84,6 +88,7 @@
             background-color: #2980b9;
         }
 
+        /* Flight Table Styling */
         .flight-table {
             width: 100%;
             border-collapse: collapse;
@@ -107,7 +112,7 @@
             background-color: #f1f1f1;
         }
 
-        /* 
+        /* Responsive Table Styling */
         @media (max-width: 768px) {
             .filter-form {
                 grid-template-columns: 1fr 1fr;
@@ -120,14 +125,13 @@
             .flight-table th, .flight-table td {
                 font-size: 0.9em;
             }
-        }*/
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Flight Planner</h1>
-        
-
+        <!-- Unified Search Form for All Filters -->
         <form action="/flights/search" method="get" class="filter-form">
             <div>
                 <label for="destination">Destination:</label>
@@ -155,10 +159,11 @@
                 <input type="time" id="endTime" name="endTime" />
             </div>
 
+            <!-- Submit Button -->
             <button type="submit">Search/Clear filters</button>
         </form>
-
-
+        
+        <!-- Flight List as a Table -->
         <table class="flight-table">
             <thead>
                 <tr>
@@ -187,30 +192,29 @@
             </tbody>
         </table>
     </div>
-
     <script>
-        // https://www.sitepoint.com/community/t/flatpickr-first-day-of-week-monday-and-shorthandcurrentmonth-help/354297
+        // Initialize flatpickr on startDate and endDate input fields and set the start of the week to Monday
         flatpickr("#startDate", {
             locale: {
-                firstDayOfWeek: 1 
+                firstDayOfWeek: 1 // Set Monday as the first day of the week
             }
         });
         flatpickr("#endDate", {
             locale: {
-                firstDayOfWeek: 1 
+                firstDayOfWeek: 1 // Set Monday as the first day of the week
             }
         });
 
-        // https://stackoverflow.com/questions/72034605/flatpickr-show-24-hour-clock-on-mobile
+        // Initialize flatpickr on startTime and endTime input fields to use 24-hour format
         flatpickr("#startTime", {
             enableTime: true,
             noCalendar: true,
-            time_24hr: true
+            time_24hr: true // Use 24-hour format
         });
         flatpickr("#endTime", {
             enableTime: true,
             noCalendar: true,
-            time_24hr: true 
+            time_24hr: true // Use 24-hour format
         });
 
     </script>
