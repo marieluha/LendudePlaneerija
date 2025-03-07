@@ -24,6 +24,6 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
     
     List<Seat> findByFlightIdAndIsOccupiedFalse(Integer flightId);
     int countSeatsByFlightId(Integer flightId);
-    long countByFlightIdAndIsOccupiedFalse(Integer flightId);
+    //long countByFlightIdAndIsOccupiedFalse(Integer flightId);
 }
 
