@@ -120,7 +120,7 @@
                                 onMouseEnter="showMessage(this)"
                                 onMouseLeave="hideMessage(this)">
                             <span th:text="${seat.seatNumber}"></span>
-                            <span class="tooltip" th:text="'Additional legroom: ' + (${seat.hasLegroom} ? 'yes' : 'no') + ' | Close to exit: ' + (${seat.isCloseToExit} ? 'yes' : 'no') + ' | Seat type: ' + (${seat.seatType})"></span>
+                            <span class="tooltip" th:utext="'Additional legroom: ' + (${seat.hasLegroom} ? 'yes' : 'no') + '<br>Close to exit: ' + (${seat.isCloseToExit} ? 'yes' : 'no') + '<br>Seat type: ' + (${seat.seatType})"></span>
                         </button>
                     </form>
                 </div>
