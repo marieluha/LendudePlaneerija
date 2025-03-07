@@ -5,33 +5,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seats</title>
     <style>
+        body {
+            font-family: 'Times New Roman', sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
         .seat-grid {
             display: grid;
-            grid-template-columns: repeat(2, 100px) 250px repeat(3, 100px);
+
+            grid-template-columns: repeat(2, 50px) 150px repeat(3, 50px);
             gap: 10px;
             margin-top: 20px;
             
             justify-content: center;
-            border: 3px solid black;
+            border: 3px solid black; 
             padding: 20px;
             background-color: lightgray;
-            margin-left: 700px;
-            margin-right: 700px;
+            margin-left: 200px;
+            margin-right: 200px;
         }
+
         .seat-button {
-            width: 100px;
-            height: 100px;
+            font-family: 'Times New Roman', sans-serif;
+
+            width: 50px;
+            height: 50px;
             font-size: 16px;
             text-align: center;
-            line-height: 100px;
             border: 1px solid #ddd;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
 
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             position: relative;
-           
+        }
+
+        .filter {
+            font-family: 'Times New Roman', sans-serif;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .seat-button.available {
@@ -48,6 +76,16 @@
         .seat-button:hover:not(.occupied) {
             background-color: rgb(108, 162, 108);
         }
+
+        h2 {
+            font-size: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+
+        
         .recommended-seat {
             background-color: #45a049 !important;
             color: white;
@@ -56,60 +94,95 @@
         }
 
         .tooltip {
+            font-family: 'Times New Roman', sans-serif;
+
             visibility: hidden;
             position: absolute;
+            /*background-color: rgba(255, 255, 255, 0.591);*/
             background-color: aqua;
             color: black;
             padding: 5px;
             border-radius: 5px;
             font-size: 12px;
             white-space: nowrap;
-            transform: translateY(-150%); /*https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/translateY*/
+            transform: translateY(-150%);
         }
-    </style>
+
+    .seat-button:hover .tooltip {
+        visibility: visible;
+    }
+
+    .gap {
+        width: 250px; 
+        height: 100px;
+        background-color: transparent;
+    }
+
+    
+    button {
+        font-family: 'Times New Roman', sans-serif;
+    }
+
+
+</style>
+
+    
 </head>
 <body>
+
     <div class="container">
         <button class="back-button" onclick="window.location.href='/flights'">Back to Flights List</button>
 
-        <h2>Select Your Seats</h2>
+        <h2>Welcome, please select your seats for flight ID: [[${flightId}]]</h2>
 
-        <div>
-            <label for="seatPreference">Seat Type:</label>
-            <select id="seatPreference">
+        <div class="filter">
+            <label for="seatPreference">Seat Type: </label>
+            <select class="filter" id="seatPreference">
                 <option value="">Any</option>
                 <option value="window">Window</option>
                 <option value="aisle">Aisle</option>
                 <option value="middle">Middle</option>
             </select>
         
-            <label for="legroomPreference">Legroom:</label>
-            <select id="legroomPreference">
+            <label for="legroomPreference">Legroom: </label>
+            <select class="filter" id="legroomPreference">
                 <option value="">Any</option>
                 <option value="true">Has Legroom</option>
                 <option value="false">No Extra Legroom</option>
             </select>
         
-            <label for="exitPreference">Close to Exit:</label>
-            <select id="exitPreference">
+            <label for="exitPreference">Close to Exit: </label>
+            <select class="filter" id="exitPreference">
                 <option value="">Any</option>
                 <option value="true">Close to Exit</option>
                 <option value="false">Not Close to Exit</option>
             </select>
-        
             <button onclick="filterSeats()">Apply Filter</button>
+        </div>   
+        
+        <div class="filter">
+            <label for="adjacentSeats">Do you want seats next to each other? </label>
+            <select class="filter" id="adjacentSeats">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+            </select>
+
+            <label for="seatCount">How many seats? </label>
+            <select class="filter" id="seatCount">
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+            <button onclick="nextToEachOther()">korvuti</button>
         </div>
 
         <div id="seatSelection">
-            <p>Seats for Flight ID: [[${flightId}]]</p>
 
             <div id="seatTooltip" class="seat-tooltip"></div>
 
 
             <div class="seat-grid">
-                <!--<div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}">-->
                 <div th:each="seat : ${allSeats}" th:attr="data-type=${seat.seatType}, data-legroom=${seat.hasLegroom}, data-exit=${seat.isCloseToExit}">
-            
+               
                     <form th:action="@{/seats/select}" method="post">
                         <input type="hidden" th:name="seatId" th:value="${seat.id}" />
                         <input type="hidden" th:name="flightId" th:value="${flightId}" />
@@ -127,7 +200,9 @@
             </div>
 
         </div>
+
     </div>
+
     <script>
     function showMessage(button) {
         let tooltip = button.querySelector(".tooltip");
