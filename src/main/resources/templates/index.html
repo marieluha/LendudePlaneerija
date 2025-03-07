@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Planner</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> <!---->
     
     <style>
-        /* General Reset */
         body, h1, h2, p, table {
             margin: 0;
             padding: 0;
@@ -16,15 +15,14 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Times New Roman', sans-serif;
             background-color: #f4f4f9;
             padding: 20px;
             color: #333;
         }
 
-        /* Container Styling */
         .container {
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
             background-color: #fff;
             padding: 20px;
@@ -39,8 +37,8 @@
             text-align: center;
         }
 
-        /* Form Styling */
         .filter-form {
+            font-family: 'Times New Roman', sans-serif;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
             gap: 15px;
@@ -59,6 +57,7 @@
         }
 
         .filter-form input {
+            font-family: 'Times New Roman', sans-serif;
             padding: 8px;
             font-size: 1em;
             border: 1px solid #ddd;
@@ -71,8 +70,8 @@
             border-color: #3498db;
         }
 
-        /* Submit Button */
         .filter-form button {
+            font-family: 'Times New Roman', sans-serif;
             grid-column: span 4;
             padding: 12px 0;
             background-color: #3498db;
@@ -88,8 +87,8 @@
             background-color: #2980b9;
         }
 
-        /* Flight Table Styling */
         .flight-table {
+            font-family: 'Times New Roman', sans-serif;
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
@@ -112,7 +111,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Responsive Table Styling */
         @media (max-width: 768px) {
             .filter-form {
                 grid-template-columns: 1fr 1fr;
@@ -131,7 +129,6 @@
 <body>
     <div class="container">
         <h1>Flight Planner</h1>
-        <!-- Unified Search Form for All Filters -->
         <form action="/flights/search" method="get" class="filter-form">
             <div>
                 <label for="destination">Destination:</label>
@@ -140,30 +137,28 @@
 
             <div>
                 <label for="minPrice">Min Price:</label>
-                <input type="number" id="minPrice" name="minPrice" placeholder="Min Price" />
+                <input type="number" id="minPrice" name="minPrice" placeholder="Enter your min price" />
                 <label for="maxPrice">Max Price:</label>
-                <input type="number" id="maxPrice" name="maxPrice" placeholder="Max Price" />
+                <input type="number" id="maxPrice" name="maxPrice" placeholder="Enter your max price" />
             </div>
 
             <div>
                 <label for="startDate">Start Date:</label>
-                <input type="date" id="startDate" name="startDate" />
+                <input type="date" id="startDate" name="startDate" placeholder="Enter your start date"/>
                 <label for="endDate">End Date:</label>
-                <input type="date" id="endDate" name="endDate" />
+                <input type="date" id="endDate" name="endDate" placeholder="Enter your end date"/>
             </div>
 
             <div>
                 <label for="startTime">Start Time:</label>
-                <input type="time" id="startTime" name="startTime" />
+                <input type="time" id="startTime" name="startTime" placeholder="Enter your start time"/>
                 <label for="endTime">End Time:</label>
-                <input type="time" id="endTime" name="endTime" />
+                <input type="time" id="endTime" name="endTime" placeholder="Enter your end time"/>
             </div>
 
-            <!-- Submit Button -->
             <button type="submit">Search/Clear filters</button>
         </form>
         
-        <!-- Flight List as a Table -->
         <table class="flight-table">
             <thead>
                 <tr>
@@ -182,7 +177,6 @@
                     <td th:text="${flight.flightTime}"></td>
                     <td th:text="${flight.flightDate}"></td>
                     <td>
-                        <!--<a th:href="@{/seatSelection(flightId=${flight.id})}">-->
                         <a th:href="@{/seats/seatSelection(flightId=${flight.id})}">
  
                             <button>Pick</button>
@@ -193,28 +187,28 @@
         </table>
     </div>
     <script>
-        // Initialize flatpickr on startDate and endDate input fields and set the start of the week to Monday
+        // https://www.sitepoint.com/community/t/flatpickr-first-day-of-week-monday-and-shorthandcurrentmonth-help/354297
         flatpickr("#startDate", {
             locale: {
-                firstDayOfWeek: 1 // Set Monday as the first day of the week
+                firstDayOfWeek: 1 
             }
         });
         flatpickr("#endDate", {
             locale: {
-                firstDayOfWeek: 1 // Set Monday as the first day of the week
+                firstDayOfWeek: 1 
             }
         });
 
-        // Initialize flatpickr on startTime and endTime input fields to use 24-hour format
+        // https://stackoverflow.com/questions/72034605/flatpickr-show-24-hour-clock-on-mobile
         flatpickr("#startTime", {
             enableTime: true,
             noCalendar: true,
-            time_24hr: true // Use 24-hour format
+            time_24hr: true 
         });
         flatpickr("#endTime", {
             enableTime: true,
             noCalendar: true,
-            time_24hr: true // Use 24-hour format
+            time_24hr: true 
         });
 
     </script>

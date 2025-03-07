@@ -15,47 +15,20 @@ public class SeatService {
     private SeatRepository seatRepository;
 
     public List<Seat> getSeats(Integer flightId) {
-        // Fetch all seats for the given flightId, both available and occupied
+        
         return seatRepository.findByFlightId(flightId);
     }
 
     public Seat selectSeat(int seatId) {
-        // Find the seat by its ID
+        
         Seat seat = seatRepository.findById(seatId);
 
-        // Update the seat status to occupied
         seat.setOccupied(true);
-        seatRepository.save(seat); // Save the updated seat
+        seatRepository.save(seat); 
 
         return seat;
     }
     
-/* 
-    public List<Seat> getAvailableSeats(Integer flightId) {
-        // Fetch the available seats (not occupied) for the given flightId
-        return seatRepository.findByFlightIdAndIsOccupied(flightId, false);
-    }
-
-    public Seat selectSeat(int seatId) {
-        // Find the seat by its ID
-        Seat seat = seatRepository.findById(seatId);
-
-        // Update the seat status to occupied
-        seat.setOccupied(true);
-        seatRepository.save(seat); // Save the updated seat
-
-        return seat;
-    }
-
-*/
-
-
-
-
-
-
-
-
 
 
     public List<Seat> recommendSeats(Flight flight, int numPassengers) {
@@ -70,8 +43,7 @@ public class SeatService {
 
 
     public int getSeatCountByFlight(Integer flightId) {
-        // Assuming SeatRepository has a method to count seats for a specific flight
-        return seatRepository.countSeatsByFlightId(flightId);  // Return the count of seats for the flight
+        return seatRepository.countSeatsByFlightId(flightId);  
     }
 
     

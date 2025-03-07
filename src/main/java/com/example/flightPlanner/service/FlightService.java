@@ -1,9 +1,8 @@
 package com.example.flightPlanner.service;
 
 import com.example.flightPlanner.model.Flight;
-import com.example.flightPlanner.model.Seat;
+
 import com.example.flightPlanner.repository.FlightRepository;
-import com.example.flightPlanner.repository.SeatRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +10,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-
-import java.util.Optional;
 
 @Service
 public class FlightService {
@@ -23,26 +19,22 @@ public class FlightService {
     @Autowired
     private FlightRepository flightRepository;
 
-    @Autowired
-    private SeatRepository seatRepository;
-
-    // Method to fetch all flights from the database
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
 
-    // Method to filter flights by destination and price range
+
     public List<Flight> getFilteredFlights(String destination, Double minPrice, Double maxPrice, String startDate, String endDate, String startTime, String endTime) {
         List<Flight> allFlights = flightRepository.findAll();
 
-        // Filter flights based on destination (if provided)
+        
         if (destination != null && !destination.isEmpty()) {
             allFlights = allFlights.stream()
                 .filter(flight -> flight.getDestination().toLowerCase().contains(destination.toLowerCase()))
                 .collect(Collectors.toList());
         }
 
-        // Filter flights based on price range (if provided)
+        
         if (minPrice != null) {
             allFlights = allFlights.stream()
                 .filter(flight -> flight.getPrice() >= minPrice)
@@ -55,7 +47,7 @@ public class FlightService {
                 .collect(Collectors.toList());
         }
 
-        // Filter by date range
+        
         if (startDate != null && !startDate.isEmpty()) {
             LocalDate start = LocalDate.parse(startDate);
             allFlights = allFlights.stream()
@@ -70,7 +62,7 @@ public class FlightService {
                 .collect(Collectors.toList());
         }
 
-        // Filter by time range
+        
         if (startTime != null && !startTime.isEmpty()) {
             LocalTime start = LocalTime.parse(startTime);
             allFlights = allFlights.stream()
@@ -91,8 +83,7 @@ public class FlightService {
     }
 
 
-    public Flight findFlightById(Integer flightId) { // Changed Long to Integer
+    public Flight findFlightById(Integer flightId) { 
         return flightRepository.findById(flightId).orElse(null);
     }
-
 }

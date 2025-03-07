@@ -8,6 +8,6 @@ public class FlightViewController {
 
     @GetMapping("/")
     public String homePage() {
-        return "index";  // This will render src/main/resources/templates/index.html
+        return "index";  
     }
 }
