@@ -284,36 +284,45 @@
 
                 if (seatCount == 2) {
                     
-                    if (seatLetter === "A" && !seatGroups[rowNumber].group1.includes("1B")) {
-                        seatGroups[rowNumber].group1.push("1A");
-                    }
-                    if (seatLetter === "B" && seatGroups[rowNumber].group1.includes("1A") && !seatGroups[rowNumber].group1.includes("1B")) {
-                        seatGroups[rowNumber].group1.push("1B");
-                    }
-                    
-                    
-                    if (seatLetter === "B" && !seatGroups[rowNumber].group2.includes("1C")) {
-                        seatGroups[rowNumber].group2.push("1B");
-                    }
-                    if (seatLetter === "C" && seatGroups[rowNumber].group2.includes("1B") && !seatGroups[rowNumber].group2.includes("1C")) {
-                        seatGroups[rowNumber].group2.push("1C");
-                    }
+                    if (seatLetter === "A" && !seatGroups[rowNumber].group1.includes(`${rowNumber}B`)) {
+                    seatGroups[rowNumber].group1.push(`${seatText}`);
+                }
 
-                    
-                    if (seatLetter === "D" && !seatGroups[rowNumber].group3.includes("1E")) {
-                        seatGroups[rowNumber].group3.push("1D");
-                    }
-                    if (seatLetter === "E" && seatGroups[rowNumber].group3.includes("1D") && !seatGroups[rowNumber].group3.includes("1E")) {
-                        seatGroups[rowNumber].group3.push("1E");
-                    }
+                if (seatLetter === "B" && seatGroups[rowNumber].group1.includes(`${rowNumber}A`) && !seatGroups[rowNumber].group1.includes(`${rowNumber}B`)) {
+                    seatGroups[rowNumber].group1.push(`${seatText}`);
+                }
 
-                    
-                    if (seatLetter === "E" && !seatGroups[rowNumber].group4.includes("1F")) {
-                        seatGroups[rowNumber].group4.push("1E");
-                    }
-                    if (seatLetter === "F" && seatGroups[rowNumber].group4.includes("1E") && !seatGroups[rowNumber].group4.includes("1F")) {
-                        seatGroups[rowNumber].group4.push("1F");
-                    }
+            
+
+                
+                if (seatLetter === "B" && !seatGroups[rowNumber].group2.includes(`${rowNumber}C`)) {
+                    seatGroups[rowNumber].group2.push(`${seatText}`);
+                }
+                if (seatLetter === "C" && seatGroups[rowNumber].group2.includes(`${rowNumber}B`) && !seatGroups[rowNumber].group2.includes(`${rowNumber}C`)) {
+                    seatGroups[rowNumber].group2.push(`${seatText}`);
+                }
+
+                
+
+                
+                if (seatLetter === "D" && !seatGroups[rowNumber].group3.includes(`${rowNumber}E`)) {
+                    seatGroups[rowNumber].group3.push(`${seatText}`);
+                }
+                if (seatLetter === "E" && seatGroups[rowNumber].group3.includes(`${rowNumber}D`) && !seatGroups[rowNumber].group3.includes(`${rowNumber}E`)) {
+                    seatGroups[rowNumber].group3.push(`${seatText}`);
+                }
+
+
+
+                
+
+                
+                if (seatLetter === "E" && !seatGroups[rowNumber].group4.includes(`${rowNumber}F`)) {
+                    seatGroups[rowNumber].group4.push(`${seatText}`);
+                }
+                if (seatLetter === "F" && seatGroups[rowNumber].group4.includes(`${rowNumber}E`) && !seatGroups[rowNumber].group4.includes(`${rowNumber}F`)) {
+                    seatGroups[rowNumber].group4.push(`${seatText}`);
+                }
                 }
             }
         });
