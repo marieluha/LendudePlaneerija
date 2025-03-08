@@ -266,19 +266,28 @@
                 
 
                 let rowNumber = seatText.match(/\d+/)[0]; // row number
+                let seatLetter = seatText.match(/[A-F]/)[0];
 
                 if (!seatGroups[rowNumber]) {
                     seatGroups[rowNumber] = [];
                 }
 
-                seatGroups[rowNumber].push(`${seatText} (nr:${seatId})`);
+                if (["A", "B", "C"].includes(seatLetter)) {
+                    seatGroups[rowNumber].group1.push(`${seatText}`);
+                } else {
+                    seatGroups[rowNumber].group2.push(`${seatText}`);
+                }
             }
         });
 
         // order
         let sortedRows = Object.keys(seatGroups).sort((a, b) => a - b);
 
-        let formattedOutput = sortedRows.map(row => `Row ${row}: ${seatGroups[row].join(", ")}`).join("<br>");
+        let formattedOutput = sortedRows.map(row => 
+            `Row ${row} mis valiku kasutaja tegi: ${seatCount}: 
+            <br> &nbsp; Group A-C: ${seatGroups[row].group1.join(", ")}
+            <br> &nbsp; Group D-F: ${seatGroups[row].group2.join(", ")}`
+        ).join("<br><br>");
 
         let seatListDiv = document.getElementById("seatList");
         seatListDiv.innerHTML = `<strong>Available Seats:</strong><br>` + formattedOutput;
