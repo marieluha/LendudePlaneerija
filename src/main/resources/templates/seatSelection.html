@@ -174,7 +174,7 @@
                 <option value="2">2</option>
                 <option value="3">3</option>
             </select>
-            <button onclick="nextToEachOther()">korvuti</button>
+            <button onclick="nextToEachOther(document.getElementById('seatCount').value)">korvuti</button>
         </div>
 
         <div id="seatSelection">
@@ -256,7 +256,7 @@
     }
 
 
-    function nextToEachOther() {
+    function nextToEachOther(seatCount) {
         let seatElements = document.querySelectorAll(".seat-button");
         let seatGroups = {};
 
