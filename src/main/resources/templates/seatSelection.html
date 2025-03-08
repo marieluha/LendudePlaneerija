@@ -255,6 +255,37 @@
         });
     }
 
+
+    function nextToEachOther() {
+        let seatElements = document.querySelectorAll(".seat-button");
+        let seatGroups = {};
+
+        seatElements.forEach(seat => {
+            if (!seat.disabled) { //occupied seats
+                let seatText = seat.innerText; 
+                
+
+                let rowNumber = seatText.match(/\d+/)[0]; // row number
+
+                if (!seatGroups[rowNumber]) {
+                    seatGroups[rowNumber] = [];
+                }
+
+                seatGroups[rowNumber].push(`${seatText} (nr:${seatId})`);
+            }
+        });
+
+        // order
+        let sortedRows = Object.keys(seatGroups).sort((a, b) => a - b);
+
+        let formattedOutput = sortedRows.map(row => `Row ${row}: ${seatGroups[row].join(", ")}`).join("<br>");
+
+        let seatListDiv = document.getElementById("seatList");
+        seatListDiv.innerHTML = `<strong>Available Seats:</strong><br>` + formattedOutput;
+    }
+
+
+
     </script>
 </body>
 </html>
