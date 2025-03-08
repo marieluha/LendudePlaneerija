@@ -272,10 +272,48 @@
                     seatGroups[rowNumber] = [];
                 }
 
+
+                if (seatCount == 3){
                 if (["A", "B", "C"].includes(seatLetter)) {
                     seatGroups[rowNumber].group1.push(`${seatText}`);
                 } else {
                     seatGroups[rowNumber].group2.push(`${seatText}`);
+                }
+                }
+
+
+                if (seatCount == 2) {
+                    
+                    if (seatLetter === "A" && !seatGroups[rowNumber].group1.includes("1B")) {
+                        seatGroups[rowNumber].group1.push("1A");
+                    }
+                    if (seatLetter === "B" && seatGroups[rowNumber].group1.includes("1A") && !seatGroups[rowNumber].group1.includes("1B")) {
+                        seatGroups[rowNumber].group1.push("1B");
+                    }
+                    
+                    
+                    if (seatLetter === "B" && !seatGroups[rowNumber].group2.includes("1C")) {
+                        seatGroups[rowNumber].group2.push("1B");
+                    }
+                    if (seatLetter === "C" && seatGroups[rowNumber].group2.includes("1B") && !seatGroups[rowNumber].group2.includes("1C")) {
+                        seatGroups[rowNumber].group2.push("1C");
+                    }
+
+                    
+                    if (seatLetter === "D" && !seatGroups[rowNumber].group3.includes("1E")) {
+                        seatGroups[rowNumber].group3.push("1D");
+                    }
+                    if (seatLetter === "E" && seatGroups[rowNumber].group3.includes("1D") && !seatGroups[rowNumber].group3.includes("1E")) {
+                        seatGroups[rowNumber].group3.push("1E");
+                    }
+
+                    
+                    if (seatLetter === "E" && !seatGroups[rowNumber].group4.includes("1F")) {
+                        seatGroups[rowNumber].group4.push("1E");
+                    }
+                    if (seatLetter === "F" && seatGroups[rowNumber].group4.includes("1E") && !seatGroups[rowNumber].group4.includes("1F")) {
+                        seatGroups[rowNumber].group4.push("1F");
+                    }
                 }
             }
         });
@@ -283,11 +321,26 @@
         // order
         let sortedRows = Object.keys(seatGroups).sort((a, b) => a - b);
 
-        let formattedOutput = sortedRows.map(row => 
+
+        let formattedOutput;
+
+
+        if (seatCount == 2){
+        formattedOutput = sortedRows.map(row => 
+            `Row ${row} mis valiku kasutaja tegi: ${seatCount}: 
+            <br> &nbsp; Group A-B: ${seatGroups[row].group1.join(", ")}
+            <br> &nbsp; Group B-C: ${seatGroups[row].group2.join(", ")}
+            <br> &nbsp; group D-E: ${seatGroups[row].group3.join(", ")}
+            <br> &nbsp; group E-F: ${seatGroups[row].group4.join(", ")}`
+        ).join("<br><br>");
+        }
+        if (seatCount == 3){
+            formattedOutput = sortedRows.map(row => 
             `Row ${row} mis valiku kasutaja tegi: ${seatCount}: 
             <br> &nbsp; Group A-C: ${seatGroups[row].group1.join(", ")}
             <br> &nbsp; Group D-F: ${seatGroups[row].group2.join(", ")}`
         ).join("<br><br>");
+        }
 
         let seatListDiv = document.getElementById("seatList");
         seatListDiv.innerHTML = `<strong>Available Seats:</strong><br>` + formattedOutput;
