@@ -265,7 +265,7 @@
                 let seatText = seat.innerText; 
                 
 
-                let rowNumber = seatText.match(/\d+/)[0]; // row number
+                let rowNumber = seatText.match(/\d+/)[0]; //eraldan
                 let seatLetter = seatText.match(/[A-F]/)[0];
 
                 if (!seatGroups[rowNumber]) {
@@ -280,6 +280,7 @@
                     seatGroups[rowNumber].group2.push(`${seatText}`);
                 }
                 }
+                //alert("group 1: " + (seatGroups[rowNumber].group1).length);
 
 
                 if (seatCount == 2) {
@@ -334,21 +335,47 @@
         let formattedOutput;
 
 
-        if (seatCount == 2){
-        formattedOutput = sortedRows.map(row => 
-            `Row ${row} mis valiku kasutaja tegi: ${seatCount}: 
-            <br> &nbsp; Group A-B: ${seatGroups[row].group1.join(", ")}
-            <br> &nbsp; Group B-C: ${seatGroups[row].group2.join(", ")}
-            <br> &nbsp; group D-E: ${seatGroups[row].group3.join(", ")}
-            <br> &nbsp; group E-F: ${seatGroups[row].group4.join(", ")}`
-        ).join("<br><br>");
+        if (seatCount == 2) {
+
+            sortedRows.forEach(row => {
+                Object.keys(seatGroups[row]).forEach(group => {
+                    if (seatGroups[row][group].length !== 2) {
+                        seatGroups[row][group] = []; 
+                    }
+                });
+            });
+
+
+            formattedOutput = sortedRows.map(row => {
+                let group1 = seatGroups[row].group1.length ? `<br> &nbsp; Group A-B: ${seatGroups[row].group1.join(", ")}` : "";
+                let group2 = seatGroups[row].group2.length ? `<br> &nbsp; Group B-C: ${seatGroups[row].group2.join(", ")}` : "";
+                let group3 = seatGroups[row].group3.length ? `<br> &nbsp; Group D-E: ${seatGroups[row].group3.join(", ")}` : "";
+                let group4 = seatGroups[row].group4.length ? `<br> &nbsp; Group E-F: ${seatGroups[row].group4.join(", ")}` : "";
+
+                return `Row ${row} mis valiku kasutaja tegi: ${seatCount}: ${group1}${group2}${group3}${group4}`;
+            }).join("<br><br>");
         }
+
+
+
         if (seatCount == 3){
-            formattedOutput = sortedRows.map(row => 
-            `Row ${row} mis valiku kasutaja tegi: ${seatCount}: 
-            <br> &nbsp; Group A-C: ${seatGroups[row].group1.join(", ")}
-            <br> &nbsp; Group D-F: ${seatGroups[row].group2.join(", ")}`
-        ).join("<br><br>");
+            sortedRows.forEach(row => {
+                Object.keys(seatGroups[row]).forEach(group => {
+                    if (seatGroups[row][group].length !== 3) {
+                        seatGroups[row][group] = []; 
+                    }
+                });
+            });
+
+
+
+
+            formattedOutput = sortedRows.map(row => {
+                let group1 = seatGroups[row].group1.length ? `<br> &nbsp; Group A-C: ${seatGroups[row].group1.join(", ")}` : "";
+                let group2 = seatGroups[row].group2.length ? `<br> &nbsp; Group D-F: ${seatGroups[row].group2.join(", ")}` : "";
+
+                return `Row ${row} mis valiku kasutaja tegi: ${seatCount}: ${group1}${group2}`;
+            }).join("<br><br>");
         }
 
         let seatListDiv = document.getElementById("seatList");
