@@ -70,23 +70,6 @@
             border-color: #3498db;
         }
 
-        .filter-form button {
-            font-family: 'Times New Roman', sans-serif;
-            grid-column: span 4;
-            padding: 12px 0;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .filter-form button:hover {
-            background-color: #2980b9;
-        }
-
         .flight-table {
             font-family: 'Times New Roman', sans-serif;
             width: 100%;
@@ -113,6 +96,20 @@
 
         button {
             font-family: 'Times New Roman', sans-serif;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            grid-column: span 4;
+        }
+
+        .button-container button {
+            padding: 5px 20px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -146,7 +143,9 @@
                 <input type="time" id="endTime" name="endTime" placeholder="Enter your end time"/>
             </div>
 
-            <button type="submit">Search/Clear filters</button>
+            <div class="button-container">
+                <button type="submit">Search/Clear filters</button>
+            </div>
         </form>
         
         <table class="flight-table">
@@ -157,6 +156,7 @@
                     <th>Price</th>
                     <th>Time</th>
                     <th>Date</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
