@@ -1,8 +1,14 @@
-## Database Structure Overview:
+# Welcome
 
+This project is for my CGI Summer Internship trial work. It is a web application designed to assist flight passengers with flight planning and seat selection recommendations on airplanes. The application back-end is built using Spring Boot.
+
+
+## My database structure overview
+
+My database contains 20 flights.
 Each flight in my database contains 60 seats, distributed as follows:
 
-* Rows 1A to 1F, through to 10A to 10F.
+* Rows 1A-1F, to 10A-10F.
 
 Seating Information:
 
