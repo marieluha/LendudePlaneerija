@@ -1,4 +1,4 @@
-###Database Structure Overview:
+## Database Structure Overview:
 
 Each flight in my database contains 60 seats, distributed as follows:
 
